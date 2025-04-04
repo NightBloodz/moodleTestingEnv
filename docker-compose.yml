@@ -1,0 +1,29 @@
+
+services:
+  apache:
+    build: .
+    container_name: apache
+    ports:
+      - "80:80"
+    volumes:
+      - ./src:/var/www/html/
+      - ./moodledata:/var/www/moodledata
+    environment:
+      - PHP_XDEBUG_ENABLED=1
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    
+
+  mysql:
+    image: mysql
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: rootpassword   # Set the root password
+      MYSQL_DATABASE: app_db              # Create a database
+      MYSQL_USER: app_user                # Create a user
+      MYSQL_PASSWORD: app_password        # Set user password
+    ports:
+      - "3306:3306"       # Expose MySQL on port 3306
+    
+    extra_hosts:
+    - "host.docker.internal:host-gateway"
